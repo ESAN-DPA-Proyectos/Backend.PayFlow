@@ -1,0 +1,40 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build Results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+*.log
+
+# ASP.NET Core
+appsettings.*.json
+appsettings.Development.json
+secrets.json
+
+# Configuration folders
+publish/
+out/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.sln.docstates
+
+# IIS / DB
+*.db
+*.mdf
+*.ldf
+
+# Node (si usas npm en el backend o con Swagger)
+node_modules/
+
+# Coverage / Test
+coverage/
+*.coverage
+*.coveragexml
+TestResults/
