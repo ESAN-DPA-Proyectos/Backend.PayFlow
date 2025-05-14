@@ -1,2 +1,2 @@
-# ESAN-PayFlow-Backend
-API ASP.NET Core para la gestión de fondos compartidos
+# PayFlow - Backend API
+API ASP.NET Core para la gestión de fondos compartidos del grupo G1
