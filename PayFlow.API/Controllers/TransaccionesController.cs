@@ -20,7 +20,7 @@ namespace PayFlow.API.Controllers
             _context = context;
         }
 
-        // GET: api/Transacciones
+        // GET: api/Transacciones xxx
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transacciones>>> GetTransacciones()
         {
