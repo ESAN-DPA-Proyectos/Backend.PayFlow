@@ -20,7 +20,7 @@ namespace PayFlow.API.Controllers
             _context = context;
         }
 
-        // GET: api/Transacciones xxx
+        // GET: api/Transacciones
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transacciones>>> GetTransacciones()
         {
@@ -31,18 +31,17 @@ namespace PayFlow.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Transacciones>> GetTransacciones(int id)
         {
-            var transacciones = await _context.Transacciones.FindAsync(id);
+            var transaccion = await _context.Transacciones.FindAsync(id);
 
-            if (transacciones == null)
+            if (transaccion == null)
             {
                 return NotFound();
             }
 
-            return transacciones;
+            return transaccion;
         }
 
         // PUT: api/Transacciones/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTransacciones(int id, Transacciones transacciones)
         {
@@ -73,27 +72,30 @@ namespace PayFlow.API.Controllers
         }
 
         // POST: api/Transacciones
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Transacciones>> PostTransacciones(Transacciones transacciones)
+public async Task<ActionResult<Transacciones>> PostTransacciones(Transacciones transaccion)
         {
-            _context.Transacciones.Add(transacciones);
+            transaccion.Tipo = "Retiro";
+            transaccion.Estado = "Pendiente";
+            transaccion.FechaRegistro = DateTime.Now;
+
+            _context.Transacciones.Add(transaccion);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTransacciones", new { id = transacciones.IdTransaccion }, transacciones);
+            return CreatedAtAction("GetTransacciones", new { id = transaccion.IdTransaccion }, transaccion);
         }
 
         // DELETE: api/Transacciones/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransacciones(int id)
         {
-            var transacciones = await _context.Transacciones.FindAsync(id);
-            if (transacciones == null)
+            var transaccion = await _context.Transacciones.FindAsync(id);
+            if (transaccion == null)
             {
                 return NotFound();
             }
 
-            _context.Transacciones.Remove(transacciones);
+            _context.Transacciones.Remove(transaccion);
             await _context.SaveChangesAsync();
 
             return NoContent();
