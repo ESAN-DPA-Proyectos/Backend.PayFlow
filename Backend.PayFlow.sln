@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36119.2 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend.PayFlow.API", "Backend.PayFlow.API\Backend.PayFlow.API.csproj", "{2F8BB6E2-31AE-46D3-9267-24A50AC84E29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend.PayFlow.DOMAIN", "Backend.PayFlow.DOMAIN\Backend.PayFlow.DOMAIN.csproj", "{8B18174C-DBDD-4209-9E94-F5A433F00FCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2F8BB6E2-31AE-46D3-9267-24A50AC84E29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F8BB6E2-31AE-46D3-9267-24A50AC84E29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F8BB6E2-31AE-46D3-9267-24A50AC84E29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B18174C-DBDD-4209-9E94-F5A433F00FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B18174C-DBDD-4209-9E94-F5A433F00FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B18174C-DBDD-4209-9E94-F5A433F00FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B18174C-DBDD-4209-9E94-F5A433F00FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
