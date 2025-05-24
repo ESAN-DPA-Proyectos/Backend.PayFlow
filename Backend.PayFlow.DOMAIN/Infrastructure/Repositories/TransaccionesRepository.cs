@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
 {
-    public class TransaccionesRepository
+    public class TransaccionesRepository : ITransaccionesRepository
     {
         private readonly PayFlowDbContext _context;
 
@@ -47,7 +47,7 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
         {
             var existingTransacciones = await _context.Transacciones.FindAsync(transacciones.IdTransaccion);
             if (existingTransacciones == null)
-            { 
+            {
                 return false;
             }
             existingTransacciones.Tipo = transacciones.Tipo;
@@ -61,17 +61,7 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
         }
 
         //Delete transacción
-        public async Task<bool> DeleteTransacciones(int IdTransacciones)
-        {
-            var transacciones = await GetTransaccionesById(id);
-            if (transacciones == null)
-            {
-                return false;
-            }
-            transacciones.
 
-
-        }
 
 
 

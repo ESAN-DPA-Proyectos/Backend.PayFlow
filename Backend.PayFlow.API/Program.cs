@@ -1,4 +1,5 @@
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
+using Backend.PayFlow.DOMAIN.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ var _config = builder.Configuration;
 var connectionString = _config.GetConnectionString("DeveloperConnection");
 builder.Services.AddDbContext<PayFlowDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
