@@ -11,5 +11,8 @@ namespace Backend.PayFlow.DOMAIN.Core.Interfaces
 
         Task<IEnumerable<UsuarioDto>> ObtenerTodosLosUsuariosAsync();
 
+        Task<bool> CambiarContrasenaAsync(int idUsuario, string nuevaContrasena);
+
+
     }
 }

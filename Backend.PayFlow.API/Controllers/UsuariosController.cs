@@ -46,5 +46,20 @@ public class UsuariosController : ControllerBase
         return Ok(usuarios);
     }
 
+    // PUT api/usuarios/{id}/cambiar-contraseña
+    [HttpPut("{id}/cambiar-contraseña")]
+    public async Task<IActionResult> CambiarContrasena(int id, [FromBody] UsuarioCambiarContrasenaDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.NuevaContrasena))
+            return BadRequest(new { message = "La contraseña no puede estar vacía." });
+
+        var resultado = await _usuarioService.CambiarContrasenaAsync(id, dto.NuevaContrasena);
+
+        if (!resultado)
+            return NotFound(new { message = "Usuario no encontrado." });
+
+        return Ok(new { message = "Contraseña actualizada exitosamente." });
+    }
+
 
 }

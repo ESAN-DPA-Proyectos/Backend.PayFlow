@@ -74,6 +74,17 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<bool> CambiarContrasenaAsync(int idUsuario, string nuevaContrasena)
+        {
+            var usuario = await _context.Usuarios.FindAsync(idUsuario);
+            if (usuario == null)
+                return false;
+
+            usuario.ContrasenaHash = HashPassword(nuevaContrasena);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
 
         private string HashPassword(string password)
         {
