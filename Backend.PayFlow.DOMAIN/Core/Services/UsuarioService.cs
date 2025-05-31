@@ -3,6 +3,7 @@ using Backend.PayFlow.DOMAIN.Core.Entities;
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -35,6 +36,44 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<UsuarioDto?> ObtenerUsuarioPorIdAsync(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+
+            if (usuario == null)
+                return null;
+
+            return new UsuarioDto
+            {
+                IdUsuario = usuario.IdUsuario,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                DNI = usuario.Dni,
+                Correo = usuario.Correo,
+                Usuario = usuario.Usuario,
+                FechaRegistro = usuario.FechaRegistro ?? DateTime.MinValue,
+                Estado = usuario.Estado
+            };
+        }
+
+        public async Task<IEnumerable<UsuarioDto>> ObtenerTodosLosUsuariosAsync()
+        {
+            return await _context.Usuarios
+                .Select(usuario => new UsuarioDto
+                {
+                    IdUsuario = usuario.IdUsuario,
+                    Nombre = usuario.Nombre,
+                    Apellido = usuario.Apellido,
+                    DNI = usuario.Dni,
+                    Correo = usuario.Correo,
+                    Usuario = usuario.Usuario,
+                    FechaRegistro = usuario.FechaRegistro ?? DateTime.MinValue,
+                    Estado = usuario.Estado
+                })
+                .ToListAsync();
+        }
+
 
         private string HashPassword(string password)
         {
