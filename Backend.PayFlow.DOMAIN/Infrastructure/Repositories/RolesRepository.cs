@@ -32,7 +32,7 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
         }
 
         // Add a new role
-        public async Task<int> AddRoleAsync(Roles role)
+        public async Task<int> AddRole(Roles role)
         {
             await _context.Roles.AddAsync(role);
             await _context.SaveChangesAsync();
@@ -81,9 +81,7 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
             return true;
         }
 
-        public Task<IEnumerable<Roles>> GetAllRolesAsync()
-        {
-            throw new NotImplementedException();
-        }
+        
+
     }
 }

@@ -1,6 +1,10 @@
-﻿using Backend.PayFlow.DOMAIN.Core.Interfaces;
+﻿using Backend.PayFlow.DOMAIN.Core.DTOs;
+using Backend.PayFlow.DOMAIN.Core.Entities;
+using Backend.PayFlow.DOMAIN.Core.Interfaces;
+using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.PayFlow.API.Controllers
 {
@@ -8,18 +12,102 @@ namespace Backend.PayFlow.API.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly IRolesRepository _roleRepository;
-        public RolesController(IRolesRepository roleRepository)
+        private readonly PayFlowDbContext _context;
+
+        public RolesController(PayFlowDbContext context)
         {
-            _roleRepository = roleRepository;
+            _context = context;
         }
 
-        //Get all categories
-        [HttpGet]
-        public async Task<IActionResult> GetAllRoles()
+
+        /******************************************************************/
+        private bool RoleExists(int id)
         {
-            var roles = await _roleRepository.GetAllRoles();
-            return Ok(roles);
+            return _context.Roles.Any(e => e.IdRol == id);
         }
+        /******************************************************************/
+
+
+        // GET: api/Roles
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Roles>>> GetAllRoles()
+        {
+            return await _context.Roles.ToListAsync();
+        }
+
+
+
+        // GET: api/Roles/2
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Roles>> GetRoleById(int id)
+        {
+            var role = await _context.Roles.FindAsync(id);
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            return role;
+        }
+
+
+        // POST: api/Roles
+        [HttpPost]
+        public async Task<ActionResult<Roles>> PostRole(Roles role)
+        {
+            _context.Roles.Add(role);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetAllRoles", new { id = role.IdRol }, role);
+        }
+
+
+        // PUT: api/Roles
+        [HttpPut]
+        public async Task<IActionResult> UpdateRoles(Roles role)
+        {
+            _context.Entry(role).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RoleExists(role.IdRol))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+            
+        }
+
+
+        // DELETE: api/Roles/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRoles(int id)
+        {
+            var role = await _context.Roles.FindAsync(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            _context.Roles.Remove(role);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+            //return CreatedAtAction("GetAllRoles", new { id = role.IdRol }, role);
+        }
+
+
+
     }
 }
