@@ -11,6 +11,6 @@ namespace Backend.PayFlow.DOMAIN.Core.Interfaces
         Task<bool> UpdateRoles(Roles role);
         Task<bool> DeleteRoles(int id);
         Task<bool> RemoveRoles(int id);
-        
+        //
     }
 }
