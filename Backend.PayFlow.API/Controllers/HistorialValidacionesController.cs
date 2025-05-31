@@ -1,7 +1,8 @@
 ﻿using Backend.PayFlow.DOMAIN.Core.Entities;
-using Backend.PayFlow.DOMAIN.Core.Interfaces;
+using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.PayFlow.API.Controllers
 {
@@ -9,71 +10,46 @@ namespace Backend.PayFlow.API.Controllers
     [ApiController]
     public class HistorialValidacionesController : ControllerBase
     {
-        private readonly IHistorialValidacionesRepository _historialValidacionesRepository;
+        private readonly PayFlowDbContext _context;
 
-        public HistorialValidacionesController(IHistorialValidacionesRepository historialValidacionesRepository)
+        public HistorialValidacionesController(PayFlowDbContext context)
         {
-            _historialValidacionesRepository = historialValidacionesRepository;
+            _context = context;
         }
-        // Get all validation history records
+
+
+        // GET: api/HistValid
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<HistorialValidaciones>>> GetAllHistValid()
         {
-            var historialValidaciones = _historialValidacionesRepository.GetAll();
-            return Ok(historialValidaciones);
+            return await _context.HistorialValidaciones.ToListAsync();
         }
-        // Get a specific validation history record by ID
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+
+
+        // GET: api/HistValid/Manual
+        [HttpGet("{TipVal}")]
+        public async Task<ActionResult<HistorialValidaciones>> GetHistValidByTipo(string TipoVal)
         {
-            var historialValidacion = _historialValidacionesRepository.GetById(id);
-            if (historialValidacion == null)
+            var hist_Valid = await _context.HistorialValidaciones.Where(c => c.TipoValidacion == TipoVal).FirstOrDefaultAsync();
+
+            if (hist_Valid == null)
             {
                 return NotFound();
             }
-            return Ok(historialValidacion);
+
+            return hist_Valid;
         }
-        // Add a new validation history record
+
+
+        // POST: api/HistValid
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] HistorialValidaciones historialValidacion)
+        public async Task<ActionResult<Roles>> PostHistValid(HistorialValidaciones hist_Valid)
         {
-            if (historialValidacion == null)
-            {
-                return BadRequest("Invalid data.");
-            }
-            _historialValidacionesRepository.Add(historialValidacion);
-            return CreatedAtAction(nameof(GetById), new { id = historialValidacion.IdHistorial }, historialValidacion);
-        }
-        // Update an existing validation history record
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] HistorialValidaciones historialValidacion)
-        {
-            if (historialValidacion == null || historialValidacion.IdHistorial != id)
-            {
-                return BadRequest("Invalid data.");
-            }
-            var existingRecord = _historialValidacionesRepository.GetById(id);
-            if (existingRecord == null)
-            {
-                return NotFound();
-            }
-            _historialValidacionesRepository.Update(historialValidacion);
-            return NoContent();
-        }
-        // Delete a validation history record
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var existingRecord = _historialValidacionesRepository.GetById(id);
-            if (existingRecord == null)
-            {
-                return NotFound();
-            }
-            _historialValidacionesRepository.Delete(id);
-            return NoContent();
-        }
+            _context.HistorialValidaciones.Add(hist_Valid);
+            await _context.SaveChangesAsync();
 
-
+            return CreatedAtAction("GetAllHistValid", new { id = hist_Valid.IdHistorial }, hist_Valid);
+        }
 
 
     }
