@@ -39,7 +39,7 @@ namespace Backend.PayFlow.API.Controllers
 
         // GET: api/Roles/2
         [HttpGet("{id}")]
-        public async Task<ActionResult<Roles>> GetRoleById(int id)
+        public async Task<ActionResult<Roles>> GetRoleById222(int id)
         {
             var role = await _context.Roles.FindAsync(id);
 
@@ -54,7 +54,7 @@ namespace Backend.PayFlow.API.Controllers
 
         // POST: api/Roles
         [HttpPost]
-        public async Task<ActionResult<Roles>> PostRole(Roles role)
+        public async Task<ActionResult<Roles>> AddRole(Roles role)
         {
             _context.Roles.Add(role);
             await _context.SaveChangesAsync();
