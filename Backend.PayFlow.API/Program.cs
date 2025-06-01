@@ -11,7 +11,10 @@ var connectionString = _config.GetConnectionString("DeveloperConnection");
 builder.Services.AddDbContext<PayFlowDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+
 builder.Services.AddTransient<IRolesRepository, RolesRepository>();
+builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
