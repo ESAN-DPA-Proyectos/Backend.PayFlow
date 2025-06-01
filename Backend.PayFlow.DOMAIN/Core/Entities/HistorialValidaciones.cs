@@ -23,3 +23,6 @@ public partial class HistorialValidaciones
 
     public virtual Usuarios? ValidadoPorNavigation { get; set; }
 }
+
+
+

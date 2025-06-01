@@ -12,7 +12,11 @@ builder.Services.AddDbContext<PayFlowDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 
+
+builder.Services.AddTransient<IHistorialValidacionesRepository, HistorialValidacionesRepository>();
 builder.Services.AddTransient<IRolesRepository, RolesRepository>();
+
+
 builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>();
 
 
