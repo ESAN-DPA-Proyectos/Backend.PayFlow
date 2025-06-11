@@ -13,7 +13,7 @@ builder.Services.AddDbContext<PayFlowDbContext>(options =>
 
 
 
-builder.Services.AddTransient<IHistorialValidacionesRepository, HistorialValidacionesRepository>();
+
 builder.Services.AddTransient<IRolesRepository, RolesRepository>();
 
 
