@@ -1,35 +1,37 @@
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
+using Backend.PayFlow.DOMAIN.Core.Services;
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Backend.PayFlow.DOMAIN.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Obtener configuraci�n y cadena de conexi�n
 var _config = builder.Configuration;
 var connectionString = _config.GetConnectionString("DeveloperConnection");
+
+// Registrar DbContext
 builder.Services.AddDbContext<PayFlowDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 
-
-
+// Registrar servicios de aplicaci�n
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddTransient<IRolesRepository, RolesRepository>();
-
-
 builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>();
 
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware y pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseAuthorization();
