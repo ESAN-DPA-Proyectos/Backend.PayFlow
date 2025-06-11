@@ -1,11 +1,12 @@
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
 using Backend.PayFlow.DOMAIN.Core.Services;
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
+using Backend.PayFlow.DOMAIN.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Obtener configuración y cadena de conexión
+// Obtener configuraciï¿½n y cadena de conexiï¿½n
 var _config = builder.Configuration;
 var connectionString = _config.GetConnectionString("DeveloperConnection");
 
@@ -13,10 +14,13 @@ var connectionString = _config.GetConnectionString("DeveloperConnection");
 builder.Services.AddDbContext<PayFlowDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Registrar servicios de aplicación
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
-// Controladores y documentación
+// Registrar servicios de aplicaciï¿½n
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddTransient<IRolesRepository, RolesRepository>();
+builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>();
+
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
