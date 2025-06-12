@@ -34,7 +34,7 @@ public partial class PayFlowDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=LZ\\LOCAL;Database=PayFlowDB;User=sa;Pwd=123456789;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("Server=localhost;Database=PayFlowDB;User=sa;Pwd=123456789;TrustServerCertificate=True");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
