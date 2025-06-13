@@ -19,6 +19,8 @@ builder.Services.AddDbContext<PayFlowDbContext>(options =>
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddTransient<IRolesRepository, RolesRepository>();
 builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>();
+builder.Services.AddTransient<ISeguimientoTransaccionRepository, SeguimientoTransaccionRepository>();
+builder.Services.AddScoped<ISeguimientoTransaccionService, SeguimientoTransaccionService>();
 
 
 builder.Services.AddControllers();
