@@ -1,6 +1,6 @@
 ﻿using Backend.PayFlow.DOMAIN.Core.Entities;
 
-namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
+namespace Backend.PayFlow.DOMAIN.Core.Interfaces
 {
     public interface ITransaccionesRepository
     {
