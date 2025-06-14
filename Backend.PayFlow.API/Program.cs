@@ -17,7 +17,9 @@ builder.Services.AddDbContext<PayFlowDbContext>(options =>
 
 // Registrar servicios de aplicaci�n
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-builder.Services.AddTransient<IRolesRepository, RolesRepository>();
+
+builder.Services.AddScoped<IRolesService, RolesService>();
+builder.Services.AddScoped<IHistorialSesionesService, HistorialSesionesService>();
 
 builder.Services.AddTransient<ITransaccionesService, TransaccionesService>(); //reference to the service interface and implementation
 builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>(); //reference to the repository interface and implementation para evitar 500 error
