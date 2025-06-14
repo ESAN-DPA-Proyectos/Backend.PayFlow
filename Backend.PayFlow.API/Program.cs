@@ -30,6 +30,7 @@ builder.Services.AddTransient<IHistorialValidacionesRepository, HistorialValidac
 builder.Services.AddScoped<IHistorialValidacionesService, HistorialValidacionesService>();
 
 builder.Services.AddTransient<IFondosRepository, FondosRepository>();
+builder.Services.AddTransient<IFondosService, FondosService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
