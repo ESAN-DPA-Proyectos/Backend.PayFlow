@@ -19,13 +19,18 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
             {
                 IdUsuario = dto.IdUsuario,
                 IdTransaccion = dto.IdTransaccion,
-                TipoNotification = dto.TipoNotification,
+                TipoNotificacion = dto.TipoNotification,
                 Mensaje = dto.Mensaje,
                 Estado = dto.Estado,
                 FechaCreacion = dto.FechaCreacion ?? DateTime.UtcNow
             };
 
             await _repository.CreateAsync(notificacion);
+        }
+
+        public async Task<IEnumerable<Notificacion>> GetAllAsync()
+        {
+            return await _repository.GetAllAsync();
         }
     }
 }

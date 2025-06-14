@@ -90,7 +90,7 @@ public partial class PayFlowDbContext : DbContext
                 .HasConstraintName("FK__Historial__Valid__5165187F");
         });
 
-        modelBuilder.Entity<Notificaciones>(entity =>
+        modelBuilder.Entity<Notificacion>(entity =>
         {
             entity.HasKey(e => e.IdNotificacion).HasName("PK__Notifica__F6CA0A8528B2F5F3");
 

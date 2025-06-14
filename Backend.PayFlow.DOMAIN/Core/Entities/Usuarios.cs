@@ -27,7 +27,7 @@ public partial class Usuarios
 
     public virtual ICollection<HistorialValidaciones> HistorialValidaciones { get; set; } = new List<HistorialValidaciones>();
 
-    public virtual ICollection<Notificaciones> Notificaciones { get; set; } = new List<Notificaciones>();
+    public virtual ICollection<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
     public virtual ICollection<Transacciones> Transacciones { get; set; } = new List<Transacciones>();
 
