@@ -39,7 +39,7 @@ public partial class Transacciones
 
     public virtual Usuarios? IdUsuarioNavigation { get; set; }
 
-    public virtual ICollection<Notificaciones> Notificaciones { get; set; } = new List<Notificaciones>();
+    public virtual ICollection<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
     public virtual ICollection<SeguimientoTransaccion> SeguimientoTransaccion { get; set; } = new List<SeguimientoTransaccion>();
 }

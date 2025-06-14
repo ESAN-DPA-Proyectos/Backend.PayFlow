@@ -22,7 +22,8 @@ public partial class PayFlowDbContext : DbContext
 
     public virtual DbSet<HistorialValidaciones> HistorialValidaciones { get; set; }
 
-    public virtual DbSet<Notificaciones> Notificaciones { get; set; }
+    public virtual DbSet<Notificacion> Notificaciones { get; set; }
+
 
     public virtual DbSet<Roles> Roles { get; set; }
 
@@ -89,7 +90,7 @@ public partial class PayFlowDbContext : DbContext
                 .HasConstraintName("FK__Historial__Valid__5165187F");
         });
 
-        modelBuilder.Entity<Notificaciones>(entity =>
+        modelBuilder.Entity<Notificacion>(entity =>
         {
             entity.HasKey(e => e.IdNotificacion).HasName("PK__Notifica__F6CA0A8528B2F5F3");
 
