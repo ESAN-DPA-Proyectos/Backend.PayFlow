@@ -1,6 +1,7 @@
 ﻿using Backend.PayFlow.DOMAIN.Core.DTOs;
 using Backend.PayFlow.DOMAIN.Core.Entities;
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
+using Backend.PayFlow.DOMAIN.Core.Services;
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,103 +13,89 @@ namespace Backend.PayFlow.API.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly PayFlowDbContext _context;
+        private readonly IRolesService _rolesService;
 
-        public RolesController(PayFlowDbContext context)
+        public RolesController(IRolesService rolesService)
         {
-            _context = context;
+            _rolesService = rolesService;
         }
-
-
-        /******************************************************************/
-        private bool RoleExists(int id)
-        {
-            return _context.Roles.Any(e => e.IdRol == id);
-        }
-        /******************************************************************/
 
 
         // GET: api/Roles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Roles>>> GetAllRoles()
+        public async Task<IActionResult> Get()
         {
-            return await _context.Roles.ToListAsync();
+            var roles = await _rolesService.ListarRoles();
+            return Ok(roles);
         }
 
-
-
-        // GET: api/Roles/2
+        // GET: api/Roles/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<Roles>> GetRoleById222(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var role = await _context.Roles.FindAsync(id);
+            var rol = await _rolesService.BuscarRolPorId(id);
 
-            if (role == null)
-            {
-                return NotFound();
-            }
+            if (rol == null)
+                return NotFound(new { message = "Rol no encontrado." });
 
-            return role;
+            return Ok(rol);
         }
-
 
         // POST: api/Roles
         [HttpPost]
-        public async Task<ActionResult<Roles>> AddRole(Roles role)
+        public async Task<IActionResult> Post([FromBody] RolesCreateDTO dto)
         {
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
+            var resultado = await _rolesService.RegistrarRol(dto);
 
-            return CreatedAtAction("GetAllRoles", new { id = role.IdRol }, role);
+            if (resultado)
+                return Ok(new 
+                    {
+                        resultado,
+                        message = "Rol registrado exitosamente.",
+                        dto
+                    }
+                );
+
+            return StatusCode(500, new { message = "Error al registrar el rol." });
         }
-
 
         // PUT: api/Roles
         [HttpPut]
-        public async Task<IActionResult> UpdateRoles(Roles role)
+        public async Task<IActionResult> UpdateRoles(Roles rol)
         {
-            _context.Entry(role).State = EntityState.Modified;
+            var resultado = await _rolesService.ActualizarRol(rol);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RoleExists(role.IdRol))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (resultado)
+                return Ok(new
+                    {
+                        resultado,
+                        message = "Rol actualizado exitosamente.",
+                        rol
+                    }
+                );
 
-            return NoContent();
-            
+            return StatusCode(500, new { message = "Error al actualizar el rol." });
+
         }
-
 
         // DELETE: api/Roles/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoles(int id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
+            var resultado = await _rolesService.RemoveRol(id);
 
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
+            if (resultado)
+                return Ok(new
+                    {
+                        resultado,
+                        message = "Rol eleminado exitosamente.",
+                        id
+                    }
+                );
 
-            return NoContent();
-            //return CreatedAtAction("GetAllRoles", new { id = role.IdRol }, role);
-            //
+            return StatusCode(500, new { message = "Error al eliminar el rol." });
+
         }
-
-
 
     }
 }
