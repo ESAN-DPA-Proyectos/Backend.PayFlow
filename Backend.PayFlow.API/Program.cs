@@ -19,9 +19,11 @@ builder.Services.AddDbContext<PayFlowDbContext>(options =>
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddTransient<IRolesRepository, RolesRepository>();
 
-builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>();
+builder.Services.AddTransient<ITransaccionesService, TransaccionesService>(); //reference to the service interface and implementation
+builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>(); //reference to the repository interface and implementation para evitar 500 error
 
 builder.Services.AddTransient<ISeguimientoTransaccionRepository, SeguimientoTransaccionRepository>();
+
 builder.Services.AddScoped<ISeguimientoTransaccionService, SeguimientoTransaccionService>();
 
 builder.Services.AddTransient<IHistorialValidacionesRepository, HistorialValidacionesRepository>();
@@ -31,13 +33,30 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add Swagger/OpenAPI support
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "PayFlow API",
+        Version = "v1",
+        Description = "API for managing transactions in PayFlow application."
+    });
+});
+
+
 var app = builder.Build();
 
 // Middleware y pipeline HTTP
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi(); // Soporte OpenAPI (opcional según librerías usadas)
+    
+    // Enable Swagger UI in development environment
+    app.UseSwagger(); // Generación del JSON Swagger
+    app.UseSwaggerUI(); // Interfaz gráfica de Swagger
 }
 
 app.UseAuthorization();

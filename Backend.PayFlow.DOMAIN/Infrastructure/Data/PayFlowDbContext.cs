@@ -32,11 +32,8 @@ public partial class PayFlowDbContext : DbContext
 
     public virtual DbSet<Usuarios> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=localhost;Database=PayFlowDB;User=sa;Pwd=123456789;TrustServerCertificate=True");
-    }
-
+    //Se borró la cadenaa de conexión por tema de seguridad
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Fondos>(entity =>
