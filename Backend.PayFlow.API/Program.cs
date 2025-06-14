@@ -6,18 +6,32 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Obtener configuraci�n y cadena de conexi�n
 var _config = builder.Configuration;
 var connectionString = _config.GetConnectionString("DeveloperConnection");
+
+// Registrar DbContext
 builder.Services.AddDbContext<PayFlowDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>(); //reference to the repository interface and implementation para evitar 500 error
+
+// Registrar servicios de aplicaci�n
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddTransient<IRolesRepository, RolesRepository>();
+
 builder.Services.AddTransient<ITransaccionesService, TransaccionesService>(); //reference to the service interface and implementation
+builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>(); //reference to the repository interface and implementation para evitar 500 error
+
+builder.Services.AddTransient<ISeguimientoTransaccionRepository, SeguimientoTransaccionRepository>();
+
+builder.Services.AddScoped<ISeguimientoTransaccionService, SeguimientoTransaccionService>();
+
+builder.Services.AddTransient<IHistorialValidacionesRepository, HistorialValidacionesRepository>();
+builder.Services.AddScoped<IHistorialValidacionesService, HistorialValidacionesService>();
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Add Swagger/OpenAPI support
 builder.Services.AddEndpointsApiExplorer();
@@ -34,14 +48,15 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// Middleware y pipeline HTTP
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi(); // Soporte OpenAPI (opcional según librerías usadas)
     
     // Enable Swagger UI in development environment
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(); // Generación del JSON Swagger
+    app.UseSwaggerUI(); // Interfaz gráfica de Swagger
 }
 
 app.UseAuthorization();
