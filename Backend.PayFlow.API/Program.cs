@@ -31,6 +31,9 @@ builder.Services.AddScoped<ISeguimientoTransaccionService, SeguimientoTransaccio
 builder.Services.AddTransient<IHistorialValidacionesRepository, HistorialValidacionesRepository>();
 builder.Services.AddScoped<IHistorialValidacionesService, HistorialValidacionesService>();
 
+builder.Services.AddScoped<INotificacionRepository, NotificacionRepository>();
+builder.Services.AddScoped<NotificacionService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
