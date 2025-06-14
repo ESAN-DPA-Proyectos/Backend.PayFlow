@@ -29,6 +29,8 @@ builder.Services.AddScoped<ISeguimientoTransaccionService, SeguimientoTransaccio
 builder.Services.AddTransient<IHistorialValidacionesRepository, HistorialValidacionesRepository>();
 builder.Services.AddScoped<IHistorialValidacionesService, HistorialValidacionesService>();
 
+builder.Services.AddTransient<IFondosRepository, FondosRepository>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
