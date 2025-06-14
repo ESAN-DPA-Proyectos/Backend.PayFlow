@@ -36,6 +36,7 @@ builder.Services.AddScoped<INotificacionRepository, NotificacionRepository>();
 builder.Services.AddScoped<NotificacionService>();
 
 builder.Services.AddTransient<IFondosRepository, FondosRepository>();
+builder.Services.AddTransient<IFondosService, FondosService>();
 
 
 builder.Services.AddControllers();

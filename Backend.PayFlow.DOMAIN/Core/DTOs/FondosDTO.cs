@@ -14,12 +14,36 @@ namespace Backend.PayFlow.DOMAIN.Core.DTOs
 
         public string? Descripcion { get; set; }
 
+        public decimal? Meta { get; set; }
+
+        public decimal? SaldoActual { get; set; }
+
+        public string? Estado { get; set; }
+    }
+    public class FondosListDTO
+    {
+        public int IdFondo { get; set; }
+
+        public string Nombre { get; set; } = null!;
+
+        public string? Descripcion { get; set; }
+
         public decimal? AportePorAsociado { get; set; }
 
         public decimal? Meta { get; set; }
 
         public decimal? SaldoActual { get; set; }
 
+        public string? Estado { get; set; }
+    }
+
+    public class FondosCreateDTO
+    {
+        public string Nombre { get; set; } = null!;
+        public string? Descripcion { get; set; }
+        public decimal? AportePorAsociado { get; set; }
+        public decimal? Meta { get; set; }
+        public decimal? SaldoActual { get; set; }
         public string? Estado { get; set; }
     }
 }
