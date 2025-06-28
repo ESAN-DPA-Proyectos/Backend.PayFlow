@@ -19,13 +19,15 @@ builder.Services.AddDbContext<PayFlowDbContext>(options =>
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 builder.Services.AddScoped<IRolesService, RolesService>();
-builder.Services.AddScoped<IHistorialSesionesService, HistorialSesionesService>();
+builder.Services.AddTransient<IRolesRepository, RolesRepository>();
 
-builder.Services.AddTransient<ITransaccionesService, TransaccionesService>(); //reference to the service interface and implementation
+builder.Services.AddScoped<IHistorialSesionesService, HistorialSesionesService>();
+builder.Services.AddTransient<IHistorialSesionesRepository, HistorialSesionesRepository>();
+
+builder.Services.AddScoped<ITransaccionesService, TransaccionesService>(); //reference to the service interface and implementation
 builder.Services.AddTransient<ITransaccionesRepository, TransaccionesRepository>(); //reference to the repository interface and implementation para evitar 500 error
 
 builder.Services.AddTransient<ISeguimientoTransaccionRepository, SeguimientoTransaccionRepository>();
-
 builder.Services.AddScoped<ISeguimientoTransaccionService, SeguimientoTransaccionService>();
 
 builder.Services.AddTransient<IHistorialValidacionesRepository, HistorialValidacionesRepository>();

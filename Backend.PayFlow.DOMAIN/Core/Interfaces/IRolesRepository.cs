@@ -1,9 +1,9 @@
 ﻿using Backend.PayFlow.DOMAIN.Core.DTOs;
 using Backend.PayFlow.DOMAIN.Core.Entities;
 
-namespace Backend.PayFlow.DOMAIN.Core.Services
+namespace Backend.PayFlow.DOMAIN.Core.Interfaces
 {
-    public interface IRolesService
+    public interface IRolesRepository
     {
         Task<bool> ActualizarRol(Roles rol);
         Task<Roles> BuscarRolPorId(int id);
