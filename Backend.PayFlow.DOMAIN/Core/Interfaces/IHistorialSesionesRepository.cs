@@ -1,8 +1,8 @@
 ﻿using Backend.PayFlow.DOMAIN.Core.DTOs;
 
-namespace Backend.PayFlow.DOMAIN.Core.Services
+namespace Backend.PayFlow.DOMAIN.Core.Interfaces
 {
-    public interface IHistorialSesionesService
+    public interface IHistorialSesionesRepository
     {
         Task<IEnumerable<HistorialSesionesDTO>> BuscarHistSesionPorTipAsc(string TipAcceso);
         Task<IEnumerable<HistorialSesionesDTO>> ListarHistSesion();

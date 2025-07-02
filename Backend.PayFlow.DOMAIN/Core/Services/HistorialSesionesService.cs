@@ -2,6 +2,7 @@
 using Backend.PayFlow.DOMAIN.Core.Entities;
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
+using Backend.PayFlow.DOMAIN.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,61 +15,26 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
 {
     public class HistorialSesionesService : IHistorialSesionesService
     {
-        private readonly PayFlowDbContext _context;
+        private readonly IHistorialSesionesRepository _historialSesionesRepository;
 
-        public HistorialSesionesService(PayFlowDbContext context)
+        public HistorialSesionesService(IHistorialSesionesRepository historialSesionesRepository)
         {
-            _context = context;
+            _historialSesionesRepository = historialSesionesRepository;
         }
 
-        /* Insert */
-        public async Task<bool> RegistrarHistSesion(HistorialSesionesCreateDTO dto)
-        {
-            var hs = new HistorialSesiones
-            {
-                IdUsuario = dto.IdUsuario,
-                FechaHora = dto.FechaHora,
-                TipoAcceso = dto.TipoAcceso,
-                DireccionIp = dto.DireccionIP,
-            };
-
-            _context.HistorialSesiones.Add(hs);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        /* Select */
-        public async Task<IEnumerable<HistorialSesionesDTO>> ListarHistSesion()
-        {
-            return await _context.HistorialSesiones.Select(hs => new HistorialSesionesDTO
-            {
-                IdSesion = hs.IdSesion,
-                IdUsuario = (int)hs.IdUsuario,
-                FechaHora = (DateTime)hs.FechaHora,
-                TipoAcceso = hs.TipoAcceso,
-                DireccionIP = hs.DireccionIp,
-            }
-                ).ToListAsync();
-        }
-
-        /* Select */
         public async Task<IEnumerable<HistorialSesionesDTO>> BuscarHistSesionPorTipAsc(string TipAcceso)
         {
-            /* Solo busca el priemro */
-            //var hs = await _context.HistorialSesiones.FirstOrDefaultAsync(r => r.TipoAcceso == TipAcceso);
+            return await _historialSesionesRepository.BuscarHistSesionPorTipAsc(TipAcceso);
+        }
 
-            /* busca todos */
-            return await _context.HistorialSesiones.Select(hs => new HistorialSesionesDTO
-            {
-                IdSesion = hs.IdSesion,
-                IdUsuario = (int)hs.IdUsuario,
-                FechaHora = (DateTime)hs.FechaHora,
-                TipoAcceso = hs.TipoAcceso,
-                DireccionIP = hs.DireccionIp,
-            }
-                ).Where(r => r.TipoAcceso.Contains(TipAcceso)).ToListAsync();
+        public async Task<IEnumerable<HistorialSesionesDTO>> ListarHistSesion()
+        {
+            return await _historialSesionesRepository.ListarHistSesion();
+        }
 
-            
+        public async Task<bool> RegistrarHistSesion(HistorialSesionesCreateDTO dto)
+        {
+            return await _historialSesionesRepository.RegistrarHistSesion(dto);
         }
 
     }
