@@ -4,7 +4,7 @@ using Backend.PayFlow.DOMAIN.Core.Interfaces;
 
 namespace Backend.PayFlow.DOMAIN.Core.Services
 {
-    public class NotificacionService
+    public class NotificacionService : INotificacionService
     {
         private readonly INotificacionRepository _repository;
 
