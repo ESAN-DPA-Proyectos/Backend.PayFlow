@@ -13,6 +13,7 @@ public class UsuariosController : ControllerBase
         _usuarioService = usuarioService;
     }
 
+    // GET api/usuarios/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -24,11 +25,12 @@ public class UsuariosController : ControllerBase
         return Ok(usuario);
     }
 
+    // POST api/usuarios
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] UsuarioRegisterDto dto)
+    public async Task<IActionResult> Post([FromBody] UsuarioDto dto)
     {
         if (string.IsNullOrWhiteSpace(dto.Nombre) || string.IsNullOrWhiteSpace(dto.Contrasena))
-            return BadRequest("Nombre y contraseña son obligatorios.");
+            return BadRequest(new { message = "Nombre y contraseña son obligatorios." });
 
         var resultado = await _usuarioService.RegistrarUsuarioAsync(dto);
 
@@ -48,18 +50,17 @@ public class UsuariosController : ControllerBase
 
     // PUT api/usuarios/{id}/cambiar-contraseña
     [HttpPut("{id}/cambiar-contraseña")]
-    public async Task<IActionResult> CambiarContrasena(int id, [FromBody] UsuarioCambiarContrasenaDto dto)
+    public async Task<IActionResult> CambiarContrasena(int id, [FromBody] UsuarioDto dto)
     {
         if (string.IsNullOrWhiteSpace(dto.NuevaContrasena))
             return BadRequest(new { message = "La contraseña no puede estar vacía." });
 
-        var resultado = await _usuarioService.CambiarContrasenaAsync(id, dto.NuevaContrasena);
+        dto.IdUsuario = id; // Aseguramos que el ID esté en el DTO
+        var resultado = await _usuarioService.CambiarContrasenaAsync(dto);
 
         if (!resultado)
             return NotFound(new { message = "Usuario no encontrado." });
 
         return Ok(new { message = "Contraseña actualizada exitosamente." });
     }
-
-
 }
