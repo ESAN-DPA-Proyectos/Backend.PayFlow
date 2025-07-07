@@ -5,7 +5,6 @@ using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace Backend.PayFlow.DOMAIN.Core.Services
 {
@@ -18,8 +17,11 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
             _context = context;
         }
 
-        public async Task<bool> RegistrarUsuarioAsync(UsuarioRegisterDto dto)
+        public async Task<bool> RegistrarUsuarioAsync(UsuarioDto dto)
         {
+            if (string.IsNullOrWhiteSpace(dto.Contrasena))
+                throw new ArgumentException("La contraseña no puede ser nula o vacía.");
+
             var usuario = new Usuarios
             {
                 Nombre = dto.Nombre,
@@ -33,6 +35,17 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
             };
 
             _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> CambiarContrasenaAsync(UsuarioDto dto)
+        {
+            var usuario = await _context.Usuarios.FindAsync(dto.IdUsuario);
+            if (usuario == null || string.IsNullOrWhiteSpace(dto.NuevaContrasena))
+                return false;
+
+            usuario.ContrasenaHash = HashPassword(dto.NuevaContrasena);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -73,18 +86,6 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
                 })
                 .ToListAsync();
         }
-
-        public async Task<bool> CambiarContrasenaAsync(int idUsuario, string nuevaContrasena)
-        {
-            var usuario = await _context.Usuarios.FindAsync(idUsuario);
-            if (usuario == null)
-                return false;
-
-            usuario.ContrasenaHash = HashPassword(nuevaContrasena);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
 
         private string HashPassword(string password)
         {

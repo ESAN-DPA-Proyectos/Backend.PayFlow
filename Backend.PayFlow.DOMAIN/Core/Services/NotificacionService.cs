@@ -4,7 +4,7 @@ using Backend.PayFlow.DOMAIN.Core.Interfaces;
 
 namespace Backend.PayFlow.DOMAIN.Core.Services
 {
-    public class NotificacionService
+    public class NotificacionService : INotificacionService
     {
         private readonly INotificacionRepository _repository;
 
@@ -19,7 +19,7 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
             {
                 IdUsuario = dto.IdUsuario,
                 IdTransaccion = dto.IdTransaccion,
-                TipoNotificacion = dto.TipoNotification,
+                TipoNotificacion = dto.TipoNotificacion, // corregido nombre del campo
                 Mensaje = dto.Mensaje,
                 Estado = dto.Estado,
                 FechaCreacion = dto.FechaCreacion ?? DateTime.UtcNow
@@ -28,9 +28,19 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
             await _repository.CreateAsync(notificacion);
         }
 
-        public async Task<IEnumerable<Notificacion>> GetAllAsync()
+        public async Task<IEnumerable<NotificacionDto>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            var notificaciones = await _repository.GetAllAsync();
+
+            return notificaciones.Select(n => new NotificacionDto
+            {
+                IdNotificacion = n.IdNotificacion,
+                TipoNotificacion = n.TipoNotificacion,
+                Mensaje = n.Mensaje ?? string.Empty,
+                Estado = n.Estado ?? string.Empty,
+                FechaCreacion = n.FechaCreacion ?? DateTime.MinValue
+
+            });
         }
     }
 }

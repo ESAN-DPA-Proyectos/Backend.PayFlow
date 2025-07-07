@@ -1,14 +1,14 @@
 ﻿using Backend.PayFlow.DOMAIN.Core.DTOs;
-using Backend.PayFlow.DOMAIN.Core.Services;
+using Backend.PayFlow.DOMAIN.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
 public class NotificacionesController : ControllerBase
 {
-    private readonly NotificacionService _service;
+    private readonly INotificacionService _service;
 
-    public NotificacionesController(NotificacionService service)
+    public NotificacionesController(INotificacionService service)
     {
         _service = service;
     }
@@ -22,7 +22,6 @@ public class NotificacionesController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
-
     {
         var notificaciones = await _service.GetAllAsync();
         return Ok(notificaciones);
