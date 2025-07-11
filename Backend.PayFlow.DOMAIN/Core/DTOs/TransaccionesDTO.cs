@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,6 +48,7 @@ namespace Backend.PayFlow.DOMAIN.Core.DTOs
         public string? BeneficiarioNombre { get; set; }
         public string? CuentaBeneficiario { get; set; }
         public string? Concepto { get; set; }
+        public string? Referencia { get; set; }
         public string? Comprobante { get; set; }
         public string? OrigenRol { get; set; }
     }

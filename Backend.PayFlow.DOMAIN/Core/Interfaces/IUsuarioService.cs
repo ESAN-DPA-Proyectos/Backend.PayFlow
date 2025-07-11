@@ -8,5 +8,8 @@ namespace Backend.PayFlow.DOMAIN.Core.Interfaces
         Task<bool> CambiarContrasenaAsync(UsuarioDto dto);
         Task<UsuarioDto?> ObtenerUsuarioPorIdAsync(int id);
         Task<IEnumerable<UsuarioDto>> ObtenerTodosLosUsuariosAsync();
+
+        // 🔐 Método para login
+        Task<UsuarioDto?> ValidarCredencialesAsync(string nombreUsuario, string contrasena);
     }
 }
