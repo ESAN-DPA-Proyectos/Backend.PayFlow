@@ -50,6 +50,33 @@ namespace Backend.PayFlow.API.Controllers
             return CreatedAtAction(nameof(GetTransaccionesById), new { id = transaccionesId}, transaccionesCreateDTO);
 
         }
+        // Upload comprobante
+        [HttpPost("upload-comprobante")]
+        public async Task<IActionResult> UploadComprobante(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No se proporcionó ningún archivo.");
+            }
+
+            var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "comprobantes");
+
+            if (!Directory.Exists(uploadsPath))
+            {
+                Directory.CreateDirectory(uploadsPath);
+            }
+
+            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadsPath, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var publicUrl = $"{Request.Scheme}://{Request.Host}/comprobantes/{uniqueFileName}";
+            return Ok(new { url = publicUrl });
+        }
         // Update transacción
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateTransacciones(int id, [FromBody] TransaccionesListDTO transaccionesListDTO)

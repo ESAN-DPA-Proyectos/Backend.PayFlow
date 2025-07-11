@@ -5,6 +5,7 @@ using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Backend.PayFlow.DOMAIN.Core.Services
 {
@@ -89,9 +90,8 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
 
         private string HashPassword(string password)
         {
-            byte[] salt = new byte[128 / 8];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(salt);
+            // Usamos un salt fijo para permitir comparaciones (solo para pruebas)
+            byte[] salt = Encoding.UTF8.GetBytes("saltfijo");
 
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
@@ -99,6 +99,31 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
+        }
+        public async Task<UsuarioDto?> ValidarCredencialesAsync(string nombreUsuario, string contrasena)
+        {
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Usuario == nombreUsuario);
+
+            if (usuario == null)
+                return null;
+
+            var hashIngresado = HashPassword(contrasena);
+
+            if (hashIngresado != usuario.ContrasenaHash)
+                return null;
+
+            return new UsuarioDto
+            {
+                IdUsuario = usuario.IdUsuario,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                DNI = usuario.Dni,
+                Correo = usuario.Correo,
+                Usuario = usuario.Usuario,
+                FechaRegistro = usuario.FechaRegistro ?? DateTime.MinValue,
+                Estado = usuario.Estado
+            };
         }
     }
 }

@@ -47,7 +47,19 @@ public class UsuariosController : ControllerBase
         var usuarios = await _usuarioService.ObtenerTodosLosUsuariosAsync();
         return Ok(usuarios);
     }
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] UsuarioDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Usuario) || string.IsNullOrWhiteSpace(dto.Contrasena))
+            return BadRequest(new { message = "Usuario y contraseña son obligatorios." });
 
+        var usuario = await _usuarioService.ValidarCredencialesAsync(dto.Usuario, dto.Contrasena);
+
+        if (usuario == null)
+            return Unauthorized(new { message = "Credenciales inválidas." });
+
+        return Ok(new { message = "Login exitoso", usuario });
+    }
     // PUT api/usuarios/{id}/cambiar-contraseña
     [HttpPut("{id}/cambiar-contraseña")]
     public async Task<IActionResult> CambiarContrasena(int id, [FromBody] UsuarioDto dto)

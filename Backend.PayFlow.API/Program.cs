@@ -59,6 +59,16 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Habilitar política CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -72,7 +82,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger(); // Generación del JSON Swagger
     app.UseSwaggerUI(); // Interfaz gráfica de Swagger
 }
-
+app.UseCors("AllowAll");  // <- Aquí va CORS
+app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();

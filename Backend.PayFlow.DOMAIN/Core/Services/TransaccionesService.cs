@@ -77,6 +77,7 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
                 BeneficiarioNombre = transaccionesDTO.BeneficiarioNombre,
                 CuentaBeneficiario = transaccionesDTO.CuentaBeneficiario,
                 Concepto = transaccionesDTO.Concepto,
+                Referencia = transaccionesDTO.Referencia,
                 Comprobante = transaccionesDTO.Comprobante,
                 OrigenRol = transaccionesDTO.OrigenRol,
             };
