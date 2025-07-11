@@ -62,11 +62,19 @@ builder.Services.AddSwaggerGen(c =>
 // Habilitar política CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("DevLocalhost", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy
+            // permite cualquier puerto en localhost (solo para desarrollo)
+            .SetIsOriginAllowed(origin =>
+            {
+                // true si la url es http://localhost:*  ó  https://localhost:*
+                var uri = new Uri(origin);
+                return uri.Host == "localhost";
+            })
+            .AllowCredentials()          // ← si usas cookies o Authorization
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
@@ -82,7 +90,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger(); // Generación del JSON Swagger
     app.UseSwaggerUI(); // Interfaz gráfica de Swagger
 }
-app.UseCors("AllowAll");  // <- Aquí va CORS
+app.UseCors("DevLocalhost");  // <- Aquí va CORS
 app.UseStaticFiles();
 app.UseHttpsRedirection(); // Opcional, pero recomendado para producción
 app.UseAuthorization();
