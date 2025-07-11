@@ -1,4 +1,5 @@
-﻿using Backend.PayFlow.DOMAIN.Core.Entities;
+﻿using Backend.PayFlow.DOMAIN.Core.DTOs;
+using Backend.PayFlow.DOMAIN.Core.Entities;
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,25 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
         {
             return await _context.Usuarios.FirstOrDefaultAsync(u => u.Correo == correo);
         }
+        /* Select */
+        public async Task<IEnumerable<UsuarioDto>> GetByDNIAsync(string DNI)
+        {
+            /* busca todos */
+            return await _context.Usuarios.Select(u => new UsuarioDto
+            {
+                IdUsuario = u.IdUsuario,
+                Nombre = u.Nombre,
+                Apellido = u.Apellido,
+                DNI = u.Dni,
+                Correo = u.Correo,
+                Usuario = u.Usuario,
+                FechaRegistro = u.FechaRegistro ?? DateTime.MinValue,
+                Estado = u.Estado
+            }
+                ).Where(r => r.DNI.Contains(DNI)).ToListAsync();
 
+
+        }
         public async Task<Usuarios?> GetByUsuarioAsync(string username)
         {
             return await _context.Usuarios.FirstOrDefaultAsync(u => u.Usuario == username);

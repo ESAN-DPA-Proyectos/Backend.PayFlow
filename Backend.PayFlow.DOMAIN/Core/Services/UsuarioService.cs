@@ -2,6 +2,7 @@
 using Backend.PayFlow.DOMAIN.Core.Entities;
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
+using Backend.PayFlow.DOMAIN.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -12,6 +13,7 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
     public class UsuarioService : IUsuarioService
     {
         private readonly PayFlowDbContext _context;
+        private readonly IUsuarioRepository _usuarioRepository;
 
         public UsuarioService(PayFlowDbContext context)
         {
@@ -99,6 +101,25 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
+        }
+        public async Task<IEnumerable<UsuarioDto>> GetByDNIAsync(string DNI)
+        {
+            var usuarios = await _context.Usuarios
+                .Where(u => u.Dni == DNI)
+                .Select(usuario => new UsuarioDto
+                {
+                    IdUsuario = usuario.IdUsuario,
+                    Nombre = usuario.Nombre,
+                    Apellido = usuario.Apellido,
+                    DNI = usuario.Dni,
+                    Correo = usuario.Correo,
+                    Usuario = usuario.Usuario,
+                    FechaRegistro = usuario.FechaRegistro ?? DateTime.MinValue,
+                    Estado = usuario.Estado
+                })
+                .ToListAsync();
+
+            return usuarios;
         }
         public async Task<UsuarioDto?> ValidarCredencialesAsync(string nombreUsuario, string contrasena)
         {

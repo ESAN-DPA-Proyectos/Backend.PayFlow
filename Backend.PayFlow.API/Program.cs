@@ -84,6 +84,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("AllowAll");  // <- Aquí va CORS
 app.UseStaticFiles();
+app.UseHttpsRedirection(); // Opcional, pero recomendado para producción
 app.UseAuthorization();
 
 app.MapControllers();
