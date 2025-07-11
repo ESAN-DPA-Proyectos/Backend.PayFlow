@@ -75,4 +75,17 @@ public class UsuariosController : ControllerBase
 
         return Ok(new { message = "Contraseña actualizada exitosamente." });
     }
+
+    // GET: api/usuarios/Dni
+    [HttpGet("Dni/{Dni}")]
+    [Produces("application/json")]
+    public async Task<IActionResult> Get(string Dni)
+    {
+        var usuarios = await _usuarioService.GetByDNIAsync(Dni);
+
+        if (usuarios == null || !usuarios.Any())
+            return NotFound(new { message = "Usuario no encontrado." });
+
+        return Ok(usuarios);
+    }
 }
