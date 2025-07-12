@@ -1,4 +1,5 @@
-﻿using Backend.PayFlow.DOMAIN.Core.Entities;
+﻿using Backend.PayFlow.DOMAIN.Core.DTOs;
+using Backend.PayFlow.DOMAIN.Core.Entities;
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
 using Backend.PayFlow.DOMAIN.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -72,7 +73,33 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
         //Delete transacción - Por regla de negocio, no se elimina una transacción.
 
 
-
+        // Get transacción by IdUsuario
+        public async Task<IEnumerable<TransaccionesDTO>> GetTransaccionesByUsu(int id)
+        {
+            // Se corrige el tipo de retorno del método para que coincida con la proyección a TransaccionesDTO.
+            // Se asume que la entidad Transacciones tiene una propiedad IdUsuario para el filtro.
+            return await _context.Transacciones
+                // CORRECCIÓN: Usar el operador de igualdad (==) para comparar IDs enteros.
+                // Si IdUsuario es nullable (int?), la comparación directa '== id' funciona correctamente.
+                .Where(tr => tr.IdUsuario == id)
+                .Select(tr => new TransaccionesDTO // Proyecta las propiedades necesarias al DTO
+                {
+                    IdTransaccion = tr.IdTransaccion,
+                    Tipo = tr.Tipo,
+                    Monto = tr.Monto,
+                    FechaRegistro = tr.FechaRegistro,
+                    Estado = tr.Estado,
+                    MetodoPago = tr.MetodoPago,
+                    BeneficiarioNombre = tr.BeneficiarioNombre,
+                    CuentaBeneficiario = tr.CuentaBeneficiario,
+                    Concepto = tr.Concepto,
+                    Referencia = tr.Referencia,
+                    Comprobante = tr.Comprobante,
+                    OrigenRol = tr.OrigenRol,
+                    IdUsuario = tr.IdUsuario // Asegúrate de incluir IdUsuario en el DTO si lo usas para filtrar o mostrar
+                })
+                .ToListAsync(); // Materializa la consulta a una lista de DTOs
+        }
 
 
     }
