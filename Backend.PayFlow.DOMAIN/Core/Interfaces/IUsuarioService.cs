@@ -14,5 +14,6 @@ namespace Backend.PayFlow.DOMAIN.Core.Interfaces
         // 🔐 Método para login
         Task<UsuarioDto?> ValidarCredencialesAsync(string nombreUsuario, string contrasena);
         Task<IEnumerable<UsuarioDto>> ListarUsuariosAsync();
+        Task<bool> DeleteAsync(int id);
     }
 }

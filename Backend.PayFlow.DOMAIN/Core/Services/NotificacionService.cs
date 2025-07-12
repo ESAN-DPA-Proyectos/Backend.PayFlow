@@ -38,8 +38,10 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
                 TipoNotificacion = n.TipoNotificacion,
                 Mensaje = n.Mensaje ?? string.Empty,
                 Estado = n.Estado ?? string.Empty,
-                FechaCreacion = n.FechaCreacion ?? DateTime.MinValue
-
+                FechaCreacion = n.FechaCreacion ?? DateTime.MinValue,
+                NombreUsuario = n.IdUsuarioNavigation?.Nombre ?? "Sin usuario",
+                MontoTransaccion = n.IdTransaccionNavigation?.Monto ?? 0,
+                MetodoPago = n.IdTransaccionNavigation?.MetodoPago ?? "Desconocido"
             });
         }
     }

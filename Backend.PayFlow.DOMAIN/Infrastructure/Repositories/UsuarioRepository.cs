@@ -67,11 +67,42 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null) return false;
+            var usuario = await _context.Usuarios
+                .Include(u => u.IdRol) // Incluir los roles para poder eliminarlos
+                .FirstOrDefaultAsync(u => u.IdUsuario == id);
 
+            if (usuario == null)
+                return false;
+
+            // Limpiar la relación con los roles (tabla intermedia UsuarioRoles)
+            usuario.IdRol.Clear();
+
+            // Eliminar relaciones adicionales si es necesario
+            var historialSesiones = _context.HistorialSesiones.Where(h => h.IdUsuario == id);
+            _context.HistorialSesiones.RemoveRange(historialSesiones);
+
+            var validaciones = _context.HistorialValidaciones
+                .Include(h => h.IdTransaccionNavigation)
+                .Where(h => h.IdTransaccionNavigation.IdUsuario == id);
+            _context.HistorialValidaciones.RemoveRange(validaciones);
+
+            var notificaciones = _context.Notificaciones.Where(n => n.IdUsuario == id);
+            _context.Notificaciones.RemoveRange(notificaciones);
+
+            var transacciones = _context.Transacciones.Where(t => t.IdUsuario == id);
+            _context.Transacciones.RemoveRange(transacciones);
+
+            // Guardar cambios para eliminar relaciones
+            await _context.SaveChangesAsync();
+           
+            var validacionesComoValidador = _context.HistorialValidaciones
+                .Where(h => h.ValidadoPor == id);
+            _context.HistorialValidaciones.RemoveRange(validacionesComoValidador);
+            // Ahora eliminar el usuario
             _context.Usuarios.Remove(usuario);
-            return await _context.SaveChangesAsync() > 0;
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<bool> CambiarContrasenaAsync(int idUsuario, string nuevaContrasenaHash)
