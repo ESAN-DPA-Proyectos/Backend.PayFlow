@@ -15,9 +15,10 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
         private readonly PayFlowDbContext _context;
         private readonly IUsuarioRepository _usuarioRepository;
 
-        public UsuarioService(PayFlowDbContext context)
+        public UsuarioService(PayFlowDbContext context, IUsuarioRepository usuarioRepository)
         {
             _context = context;
+            _usuarioRepository = usuarioRepository;
         }
 
         public async Task<bool> RegistrarUsuarioAsync(UsuarioDto dto)
@@ -145,6 +146,23 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
                 FechaRegistro = usuario.FechaRegistro ?? DateTime.MinValue,
                 Estado = usuario.Estado
             };
+
+        }
+        public async Task<IEnumerable<UsuarioDto>> ListarUsuariosAsync()
+        {
+            var lista = await _usuarioRepository.GetAllAsync();
+
+            return lista.Select(u => new UsuarioDto
+            {
+                IdUsuario = u.IdUsuario,
+                Nombre = u.Nombre,
+                Apellido = u.Apellido,
+                DNI = u.Dni,
+                Correo = u.Correo,
+                Usuario = u.Usuario ?? "",
+                FechaRegistro = u.FechaRegistro ?? DateTime.MinValue,
+                Estado = u.Estado
+            });
         }
     }
 }

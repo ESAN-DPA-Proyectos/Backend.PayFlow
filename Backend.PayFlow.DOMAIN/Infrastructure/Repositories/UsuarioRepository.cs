@@ -93,5 +93,20 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
         {
             return await _context.Usuarios.AnyAsync(u => u.Usuario == username);
         }
+        public async Task<IEnumerable<UsuarioDto>> ListarUsuariosAsync()
+        {
+            return await _context.Usuarios
+                .Select(u => new UsuarioDto
+                {
+                    IdUsuario = u.IdUsuario,
+                    Nombre = u.Nombre,
+                    Apellido = u.Apellido,
+                    Correo = u.Correo,
+                    Usuario = u.Usuario,
+                    FechaRegistro = u.FechaRegistro ?? DateTime.MinValue,
+                    Estado = u.Estado
+                })
+                .ToListAsync();
+        }
     }
 }
