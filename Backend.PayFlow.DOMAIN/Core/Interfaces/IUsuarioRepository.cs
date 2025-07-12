@@ -18,5 +18,6 @@ namespace Backend.PayFlow.DOMAIN.Core.Interfaces
         Task<bool> CambiarContrasenaAsync(int idUsuario, string nuevaContrasenaHash);
         Task<bool> ExistsByCorreoAsync(string correo);
         Task<bool> ExistsByUsuarioAsync(string username);
+        Task<IEnumerable<UsuarioDto>> ListarUsuariosAsync();
     }
 }

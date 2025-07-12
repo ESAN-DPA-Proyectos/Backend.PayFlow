@@ -13,5 +13,6 @@ namespace Backend.PayFlow.DOMAIN.Core.Interfaces
         Task<IEnumerable<UsuarioDto>> GetByDNIAsync(string DNI);
         // 🔐 Método para login
         Task<UsuarioDto?> ValidarCredencialesAsync(string nombreUsuario, string contrasena);
+        Task<IEnumerable<UsuarioDto>> ListarUsuariosAsync();
     }
 }
