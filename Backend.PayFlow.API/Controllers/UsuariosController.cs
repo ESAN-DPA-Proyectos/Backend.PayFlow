@@ -94,4 +94,14 @@ public class UsuariosController : ControllerBase
         var lista = await _usuarioService.ListarUsuariosAsync();
         return Ok(lista);
     }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var eliminado = await _usuarioService.DeleteAsync(id);
+
+        if (!eliminado)
+            return NotFound(new { message = "Usuario no encontrado" });
+
+        return Ok(new { message = "Usuario eliminado correctamente" });
+    }
 }

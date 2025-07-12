@@ -25,6 +25,7 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
             return await _context.Notificaciones
                 .Include(n => n.IdUsuarioNavigation)
                 .Include(n => n.IdTransaccionNavigation)
+                .OrderByDescending(n => n.FechaCreacion)
                 .ToListAsync();
         }
 

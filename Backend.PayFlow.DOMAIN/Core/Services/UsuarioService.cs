@@ -164,5 +164,9 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
                 Estado = u.Estado
             });
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            return await _usuarioRepository.DeleteAsync(id);
+        }
     }
 }
