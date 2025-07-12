@@ -17,6 +17,7 @@ builder.Services.AddDbContext<PayFlowDbContext>(options =>
 
 // Registrar servicios de aplicaci�n
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 builder.Services.AddScoped<INotificacionService, NotificacionService>();
 
@@ -42,6 +43,8 @@ builder.Services.AddScoped<NotificacionService>();
 builder.Services.AddTransient<IFondosRepository, FondosRepository>();
 builder.Services.AddTransient<IFondosService, FondosService>();
 
+builder.Services.AddScoped<IUsuarioRolRepository, UsuarioRolRepository>();
+builder.Services.AddScoped<IUsuarioRolService, UsuarioRolService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

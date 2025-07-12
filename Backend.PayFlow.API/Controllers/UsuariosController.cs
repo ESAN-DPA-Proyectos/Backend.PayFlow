@@ -88,4 +88,10 @@ public class UsuariosController : ControllerBase
 
         return Ok(usuarios);
     }
+    [HttpGet("listar")]
+    public async Task<IActionResult> ListarUsuarios()
+    {
+        var lista = await _usuarioService.ListarUsuariosAsync();
+        return Ok(lista);
+    }
 }
