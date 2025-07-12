@@ -21,6 +21,7 @@ namespace Backend.PayFlow.DOMAIN.Core.DTOs
         public string? Referencia { get; set; }
         public string? Comprobante { get; set; }
         public string? OrigenRol { get; set; }
+        public int? IdUsuario { get; set; }
     }
 
     public class TransaccionesListDTO

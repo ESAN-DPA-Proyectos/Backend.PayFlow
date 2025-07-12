@@ -1,6 +1,7 @@
 ﻿using Backend.PayFlow.DOMAIN.Core.DTOs;
 using Backend.PayFlow.DOMAIN.Core.Entities;
 using Backend.PayFlow.DOMAIN.Core.Interfaces;
+using Backend.PayFlow.DOMAIN.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,5 +103,13 @@ namespace Backend.PayFlow.DOMAIN.Core.Services
             return await _transaccionesRepository.UpdateTransacciones(transacciones);
         }
         // Eliminar no implementado en el repositorio (regla de negocio), pero se puede agregar si es necesario
+
+
+
+        public async Task<IEnumerable<TransaccionesDTO>> GetTransaccionesByUsu(int id)
+        {
+            return await _transaccionesRepository.GetTransaccionesByUsu(id);
+        }
+        
     }
 }

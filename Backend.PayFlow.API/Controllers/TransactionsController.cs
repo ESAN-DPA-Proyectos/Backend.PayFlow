@@ -93,5 +93,17 @@ namespace Backend.PayFlow.API.Controllers
             return NoContent();
         }
         // Delete transacción (no implementado, pero puede ser adicionado después)
+
+        // Get transaction by IdTransaccion
+        [HttpGet("Usu/{id:int}")]
+        public async Task<IActionResult> GetTransaccionesByUsu(int id)
+        {
+            var transacciones = await _transaccionesService.GetTransaccionesByUsu(id);
+            if (transacciones == null)
+            {
+                return NotFound();
+            }
+            return Ok(transacciones);
+        }
     }
 }
