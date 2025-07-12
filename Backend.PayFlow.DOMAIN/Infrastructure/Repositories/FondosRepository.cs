@@ -70,14 +70,18 @@ namespace Backend.PayFlow.DOMAIN.Infrastructure.Repositories
             return true;
         }
 
-        public Task<IEnumerable<Fondos>> GetAllFunds()
+        // Implementación de GetAllFunds (requerido por la interfaz)
+        public async Task<IEnumerable<Fondos>> GetAllFunds()
         {
-            throw new NotImplementedException();
+            return await _context.Fondos.ToListAsync();
         }
 
-        public Task<int> AddFondos(Fondos fondos)
+        // Implementación de AddFondos (requerido por la interfaz)
+        public async Task<int> AddFondos(Fondos fondos)
         {
-            throw new NotImplementedException();
+            await _context.Fondos.AddAsync(fondos);
+            await _context.SaveChangesAsync();
+            return fondos.IdFondo;
         }
     }
 }
